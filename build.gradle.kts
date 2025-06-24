@@ -47,6 +47,10 @@ kotlin {
     }
 }
 
+tasks.bootJar {
+    archiveFileName.set("panaderia-app.jar")
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }
