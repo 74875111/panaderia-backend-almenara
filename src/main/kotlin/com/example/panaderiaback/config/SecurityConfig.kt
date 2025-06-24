@@ -3,6 +3,7 @@ package com.example.panaderiaback.config
 import com.example.panaderiaback.security.JwtRequestFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -12,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
-import org.springframework.http.HttpMethod
 
 @Configuration
 @EnableWebSecurity
@@ -28,8 +28,8 @@ class SecurityConfig(private val jwtRequestFilter: JwtRequestFilter) {
             .authorizeHttpRequests { authorize ->
                 authorize
                     .requestMatchers("/api/users/register", "/api/users/login").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll() // Solo permitir GET para productos
-                    .requestMatchers(HttpMethod.GET, "/images/**").permitAll() // Solo permitir GET para imágenes
+                    .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
                     .anyRequest().authenticated()
             }
             .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter::class.java)
@@ -42,8 +42,8 @@ class SecurityConfig(private val jwtRequestFilter: JwtRequestFilter) {
         val configuration = CorsConfiguration()
         configuration.allowedOrigins = listOf(
             "http://localhost:3000",
-            "http://localhost:5173", // Tu frontend de desarrollo
-            "https://panaderia-web-almenara.vercel.app" // Tu frontend de producción
+            "http://localhost:5173",
+            "https://panaderia-web-almenara.vercel.app"
         )
         configuration.allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
         configuration.allowedHeaders = listOf("*")
